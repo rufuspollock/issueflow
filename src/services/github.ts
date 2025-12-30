@@ -4,7 +4,7 @@ export async function fetchIssues(repo: string, token: string): Promise<GitHubIs
     const [owner, name] = repo.split('/');
     if (!owner || !name) throw new Error('Invalid repo format. Use owner/repo');
 
-    const response = await fetch(`https://api.github.com/repos/${owner}/${name}/issues?state=all&per_page=100`, {
+    const response = await fetch(`https://api.github.com/repos/${owner}/${name}/issues?state=open&per_page=100`, {
         headers: {
             Authorization: `token ${token}`,
             Accept: 'application/vnd.github.v3+json',
