@@ -52,7 +52,7 @@ export default function ContextMenu({
     return (
         <div
             style={{ top, left, right, bottom }}
-            className="absolute bg-white border border-slate-200 shadow-xl rounded-lg z-50 min-w-[150px] overflow-hidden flex flex-col py-1"
+            className="absolute bg-white border border-slate-200 shadow-xl rounded-lg z-50 min-w-150 overflow-hidden flex flex-col py-1"
         >
             <div className="px-3 py-2 text-xs font-semibold text-slate-400 border-b border-slate-100 mb-1">
                 Node Actions

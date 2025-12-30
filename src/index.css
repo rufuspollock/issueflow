@@ -76,12 +76,26 @@ body {
   z-index: 20;
 }
 
+.z-50 {
+  z-index: 50;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+
 .bg-slate-50 {
   background-color: #f8fafc;
 }
 
 .bg-slate-100 {
   background-color: #f1f5f9;
+}
+
+.min-w-150 {
+  min-width: 150px;
 }
 
 .items-center {
