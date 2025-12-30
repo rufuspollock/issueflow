@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -15,12 +15,17 @@ import type {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-import { fetchIssues, parseDependencies } from './services/github';
+import { fetchIssues } from './services/github';
+import { fetchMockIssues } from './services/mock-data';
+import { parseDependencies } from './utils/processing';
 import { getLayoutedElements } from './utils/dag';
-import { Github, Play, Loader2, AlertCircle, HelpCircle } from 'lucide-react';
-import { nodeTypes } from './constants/nodeTypes';
+import IssueNode from './components/IssueNode';
+import { Github, Play, Loader2, AlertCircle, HelpCircle, Database } from 'lucide-react';
 
 function IssueFlow() {
+  const nodeTypes = useMemo(() => ({
+    issueNode: IssueNode,
+  }), []);
 
   const [repo, setRepo] = useState(() => localStorage.getItem('if-repo') || '');
   const [token, setToken] = useState(() => localStorage.getItem('if-token') || '');
@@ -71,18 +76,33 @@ function IssueFlow() {
 
     try {
       const issues = await fetchIssues(repo, token);
-      localStorage.setItem('if-issues', JSON.stringify(issues));
-
-      const dependencies = parseDependencies(issues);
-      const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(issues, dependencies);
-
-      setNodes(layoutedNodes);
-      setEdges(layoutedEdges);
+      displayIssues(issues);
     } catch (err: any) {
       setError(err.message || 'An error occurred while fetching issues.');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleMockFetch = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const issues = await fetchMockIssues();
+      displayIssues(issues);
+    } catch (err: any) {
+      setError(err.message || 'An error occurred while fetching mock issues.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const displayIssues = (issues: any[]) => {
+    localStorage.setItem('if-issues', JSON.stringify(issues));
+    const dependencies = parseDependencies(issues);
+    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(issues, dependencies);
+    setNodes(layoutedNodes);
+    setEdges(layoutedEdges);
   };
 
   return (
@@ -130,7 +150,16 @@ function IssueFlow() {
             className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-semibold rounded-lg transition-all shadow-md active:scale-95"
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
-            Fetch Issues
+            Fetch
+          </button>
+          <button
+            onClick={handleMockFetch}
+            disabled={loading}
+            className="flex items-center gap-2 px-6 py-2 bg-slate-100 hover:bg-slate-200 disabled:bg-slate-50 text-slate-700 font-semibold rounded-lg transition-all border border-slate-200 active:scale-95"
+            title="Try with sample data"
+          >
+            <Database className="w-4 h-4" />
+            Demo
           </button>
         </div>
       </header>
