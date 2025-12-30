@@ -1,20 +1,26 @@
+import { Octokit } from "@octokit/rest";
 import type { GitHubIssue } from '../types';
 
-export async function fetchIssues(repo: string, token: string): Promise<GitHubIssue[]> {
-    const [owner, name] = repo.split('/');
-    if (!owner || !name) throw new Error('Invalid repo format. Use owner/repo');
-
-    const response = await fetch(`https://api.github.com/repos/${owner}/${name}/issues?state=open&per_page=100`, {
-        headers: {
-            Authorization: `token ${token}`,
-            Accept: 'application/vnd.github.v3+json',
-        },
-    });
-
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to fetch issues');
+export async function searchIssues(query: string, token: string): Promise<GitHubIssue[]> {
+    if (!token) {
+        throw new Error("GitHub token is required");
     }
 
-    return response.json();
+    const octokit = new Octokit({ auth: token });
+
+    try {
+        const { data } = await octokit.search.issuesAndPullRequests({
+            q: query,
+            per_page: 50,
+            sort: 'updated',
+            order: 'desc'
+        });
+
+        // We cast this because Octokit types are very specific and complex, 
+        // but the shape matches our interface for the props we care about.
+        return data.items as unknown as GitHubIssue[];
+    } catch (error: any) {
+        console.error("Search failed", error);
+        throw new Error(error.message || "Failed to search issues");
+    }
 }

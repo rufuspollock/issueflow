@@ -4,13 +4,17 @@ import type { NodeProps } from 'reactflow';
 import type { GitHubIssue } from '../types';
 import { ExternalLink, CheckCircle2, CircleDot } from 'lucide-react';
 
-const IssueNode = ({ data }: NodeProps<{ label: string; issue: GitHubIssue }>) => {
+const IssueNode = ({ data }: NodeProps<{ label: string; issue: GitHubIssue; style?: { backgroundColor: string } }>) => {
     const { issue } = data;
     const isClosed = issue.state === 'closed';
+    const bgColor = data.style?.backgroundColor || (isClosed ? '#f0fdf4' : '#eff6ff');
+    const borderColor = isClosed ? 'border-green-200' : 'border-blue-200';
 
     return (
-        <div className={`px-4 py-3 shadow-xl rounded-xl border-2 transition-all duration-300 bg-white-80 backdrop-blur-md ${isClosed ? 'border-green-200 bg-green-50-50' : 'border-blue-200 bg-blue-50-50'
-            } hover-scale-105 hover:shadow-2xl min-w-[250px]`}>
+        <div
+            className={`px-4 py-3 shadow-xl rounded-xl border-2 transition-all duration-300 backdrop-blur-md ${borderColor} hover-scale-105 hover:shadow-2xl min-w-[250px]`}
+            style={{ backgroundColor: bgColor }}
+        >
             <Handle type="target" position={Position.Left} className="w-3 h-3 bg-blue-400 border-2 border-white" />
 
             <div className="flex flex-col gap-1">
