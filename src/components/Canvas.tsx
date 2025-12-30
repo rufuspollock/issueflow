@@ -39,7 +39,16 @@ const getInitialNodes = (): Node[] => {
 
 const getInitialEdges = (): Edge[] => {
     const stored = localStorage.getItem('if-edges');
-    return stored ? JSON.parse(stored) : [];
+    const edges = stored ? (JSON.parse(stored) as Edge[]) : [];
+    return edges.map((edge) => ({
+        ...edge,
+        markerEnd: {
+            type: MarkerType.ArrowClosed,
+            width: 20,
+            height: 20,
+            color: 'black',
+        },
+    }));
 };
 
 function CanvasContent({ className }: CanvasProps) {
@@ -61,7 +70,12 @@ function CanvasContent({ className }: CanvasProps) {
         (params: Connection) => setEdges((eds) => addEdge({
             ...params,
             type: 'default',
-            markerEnd: { type: 'customArrow' }, // Reference the custom marker
+            markerEnd: {
+                type: MarkerType.ArrowClosed,
+                width: 20,
+                height: 20,
+                color: 'black',
+            },
             animated: false,
         }, eds)),
         [setEdges]
@@ -138,20 +152,6 @@ function CanvasContent({ className }: CanvasProps) {
                 fitView
                 deleteKeyCode={['Backspace', 'Delete']}
             >
-                <defs>
-                    <marker
-                        id="customArrow"
-                        viewBox="0 -5 10 10"
-                        refX="12"
-                        refY="0"
-                        markerWidth="15"
-                        markerHeight="15"
-                        orient="auto-start-reverse"
-                        fill="black"
-                    >
-                        <path d="M0,-5L10,0L0,5Z" />
-                    </marker>
-                </defs>
                 <Background color="#94a3b8" gap={20} size={1} className="opacity-20" />
                 <Controls />
                 <MiniMap
