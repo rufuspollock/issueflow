@@ -61,7 +61,7 @@ function CanvasContent({ className }: CanvasProps) {
         (params: Connection) => setEdges((eds) => addEdge({
             ...params,
             type: 'default',
-            markerEnd: { type: MarkerType.ArrowClosed },
+            markerEnd: { type: 'customArrow' }, // Reference the custom marker
             animated: false,
         }, eds)),
         [setEdges]
@@ -138,6 +138,20 @@ function CanvasContent({ className }: CanvasProps) {
                 fitView
                 deleteKeyCode={['Backspace', 'Delete']}
             >
+                <defs>
+                    <marker
+                        id="customArrow"
+                        viewBox="0 -5 10 10"
+                        refX="12"
+                        refY="0"
+                        markerWidth="15"
+                        markerHeight="15"
+                        orient="auto-start-reverse"
+                        fill="black"
+                    >
+                        <path d="M0,-5L10,0L0,5Z" />
+                    </marker>
+                </defs>
                 <Background color="#94a3b8" gap={20} size={1} className="opacity-20" />
                 <Controls />
                 <MiniMap

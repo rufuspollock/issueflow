@@ -298,7 +298,7 @@ body {
 }
 
 .react-flow__edge-path {
-  stroke: #cbd5e1;
+  stroke: black;
   stroke-width: 2;
 }
 
