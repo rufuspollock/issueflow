@@ -85,29 +85,40 @@ const IssueItem: React.FC<IssueItemProps> = ({ issue, issueMap, dependencyMap, d
 
 export default function TaskListView({ issues, dependencies }: TaskListViewProps) {
     const [search, setSearch] = useState('');
+    const [showOpenOnly, setShowOpenOnly] = useState(false);
 
     const { issueMap, dependencyMap, filteredIssues } = useMemo(() => {
         const iMap = new Map(issues.map(i => [i.number, i]));
         const dMap = new Map(dependencies.map(d => [d.issueNumber, d.dependsOn]));
 
         let filtered = issues;
+
+        if (showOpenOnly) {
+            filtered = filtered.filter(i => i.state === 'open');
+        }
+
         if (search.trim()) {
             const lowerSearch = search.toLowerCase();
-            filtered = issues.filter(i =>
+            filtered = filtered.filter(i =>
                 i.title.toLowerCase().includes(lowerSearch) ||
                 String(i.number).includes(lowerSearch)
             );
         }
 
-        // Sort logic could go here (e.g., open first, or by ID)
-        filtered = [...filtered].sort((a, b) => b.number - a.number);
+        // Sort logic (open first, then by ID desc)
+        filtered = [...filtered].sort((a, b) => {
+            if (a.state === b.state) {
+                return b.number - a.number;
+            }
+            return a.state === 'open' ? -1 : 1;
+        });
 
         return { issueMap: iMap, dependencyMap: dMap, filteredIssues: filtered };
-    }, [issues, dependencies, search]);
+    }, [issues, dependencies, search, showOpenOnly]);
 
     return (
         <div className="flex flex-col h-full bg-white">
-            <div className="p-4 border-b border-slate-200 bg-white sticky top-0 z-10">
+            <div className="p-4 border-b border-slate-200 bg-white sticky top-0 z-10 flex flex-col gap-3">
                 <input
                     type="text"
                     placeholder="Search items..."
@@ -115,8 +126,20 @@ export default function TaskListView({ issues, dependencies }: TaskListViewProps
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
-                <div className="mt-2 text-xs text-slate-500">
-                    Showing {filteredIssues.length} tasks
+
+                <div className="flex items-center justify-between">
+                    <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer select-none">
+                        <input
+                            type="checkbox"
+                            checked={showOpenOnly}
+                            onChange={(e) => setShowOpenOnly(e.target.checked)}
+                            className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
+                        />
+                        Show open issues only
+                    </label>
+                    <div className="text-xs text-slate-500">
+                        Showing {filteredIssues.length} tasks
+                    </div>
                 </div>
             </div>
 
