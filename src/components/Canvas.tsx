@@ -62,7 +62,7 @@ function CanvasContent({ className }: CanvasProps) {
             ...params,
             type: 'default',
             markerEnd: { type: MarkerType.ArrowClosed },
-            animated: true,
+            animated: false,
         }, eds)),
         [setEdges]
     );

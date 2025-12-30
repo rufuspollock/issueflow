@@ -33,12 +33,18 @@ const IssueNode = ({ data }: NodeProps<{ label: string; issue: GitHubIssue; styl
 
                 <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
                     <div className="flex items-center gap-2">
-                        <img
-                            src={issue.user.avatar_url}
-                            alt={issue.user.login}
-                            className="w-5 h-5 rounded-full ring-2 ring-white"
-                        />
-                        <span className="text-xs-extra text-gray-500 font-medium">@{issue.user.login}</span>
+                        {issue.assignee ? (
+                            <>
+                                <img
+                                    src={issue.assignee.avatar_url}
+                                    alt={issue.assignee.login}
+                                    className="w-5 h-5 rounded-full ring-2 ring-white"
+                                />
+                                <span className="text-xs-extra text-gray-500 font-medium">@{issue.assignee.login}</span>
+                            </>
+                        ) : (
+                            <span className="text-xs-extra text-gray-400 font-medium italic">Unassigned</span>
+                        )}
                     </div>
 
                     <a

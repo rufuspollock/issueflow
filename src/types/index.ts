@@ -9,6 +9,10 @@ export interface GitHubIssue {
     login: string;
     avatar_url: string;
   };
+  assignee: {
+    login: string;
+    avatar_url: string;
+  } | null;
   labels: {
     name: string;
     color: string;
