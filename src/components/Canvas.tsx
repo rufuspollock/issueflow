@@ -159,13 +159,14 @@ function CanvasContent({ className }: CanvasProps) {
                     nodeColor={(n) => (n.type === 'issueNode' ? '#eff6ff' : '#fff')}
                 />
 
-                {menu && (
-                    <ContextMenu
-                        {...menu}
-                        onClose={() => setMenu(null)}
-                    />
-                )}
             </ReactFlow>
+
+            {menu && (
+                <ContextMenu
+                    {...menu}
+                    onClose={() => setMenu(null)}
+                />
+            )}
         </div>
     );
 }
