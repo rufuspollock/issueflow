@@ -63,6 +63,11 @@ export function Sidebar({ className }: SidebarProps) {
 
     return (
         <div className={cn("flex flex-col h-full bg-slate-50 border-r border-slate-200", className)}>
+            {/* Header */}
+            <div className="py-2 px-4 border-b border-slate-200 bg-white">
+                <h1 className="text-xl font-bold text-slate-800 tracking-tight font-mono">Issue Flow</h1>
+            </div>
+
             {/* Tabs */}
             <div className="flex items-center border-b border-slate-200 bg-white shadow-sm z-10">
                 <button
@@ -158,7 +163,7 @@ export function Sidebar({ className }: SidebarProps) {
                         </div>
 
                         {/* Results List */}
-                        <div className="flex-1 overflow-y-auto p-3 space-y-2">
+                        <div className="flex-1 overflow-y-auto p-3 space-y-2 bg-slate-100">
                             {loading ? (
                                 <div className="flex flex-col items-center justify-center py-12 text-slate-400">
                                     <Loader2 className="w-8 h-8 animate-spin mb-2" />
