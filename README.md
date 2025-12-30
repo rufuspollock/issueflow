@@ -1,111 +1,64 @@
-# IssueFlow
+# Issue Flow
 
-Issues form a DAG 😉
+**Issue Flow is a visual tool to help you map out, understand, and plan your GitHub issues.**
 
-## Features Implemented
+Instead of flat lists, Issue Flow lets you arrange issues on an infinite canvas. By creating visual connections between them, you can build intuitive dependency graphs, map out epics, or plan sprints in a way that makes sense to you.
 
-- GitHub Integration: Fetch issues from any public or private repository using a Personal Access Token (PAT).
-- Dependency Parsing: Automatically extracts dependencies from issue descriptions (e.g., depends on #123 or blocked by #123).
-- DAG Visualization: Renders issues as interactive nodes in a React Flow canvas, with automatic layout using dagre.
-- Premium Design: A modern, glassmorphism-inspired UI with custom issue nodes showing status, author, and links.
-- Local Caching: Persists your repository, token, and fetched issues in localStorage for a seamless experience.
+![Screenshot of Issue Flow](./docs/assets/screenshot-1.png)
+
+## Key Features
+
+- **Visual Canvas:** Drag and drop GitHub issues directly onto an infinite canvas.
+- **Connect Issues:** Draw connections between issues to represent dependencies, relationships, or workflow.
+- **GitHub Search:** Find issues from any public or private repository using standard GitHub search queries.
+- **Customizable Nodes:** Set colors for different issue statuses to quickly identify their state.
+- **Local Persistence:** Your canvas, nodes, and connections are automatically saved in your browser's local storage.
 
 ## Getting Started
 
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+1.  **Clone the Repository**
+    ```bash
+    # Replace with the actual repository URL
+    git clone https://github.com/your-username/issueflow.git
+    cd issueflow
+    ```
 
-2. **Run the development server**:
-   ```bash
-   npm run dev
-   ```
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
 
-3. **Open the app**:
-   Navigate to [http://localhost:5173](http://localhost:5173).
+3.  **Run the Development Server**
+    ```bash
+    npm run dev
+    ```
+    The application will be available at `http://localhost:5173` (or the next available port).
 
-## Implementation Details
+## How to Use
 
-- **Frontend**: Vite + React + TypeScript for a fast, modern development experience.
-- **Graph Visualization**: [React Flow](https://reactflow.dev/) for an interactive, canvas-like experience with drag-and-drop support.
-- **Layout Engine**: [Dagre](https://github.com/dagrejs/dagre) for automatic hierarchical layout of the issue graph.
-- **GitHub Integration**: Fetches repository issues via the GitHub REST API.
-- **Dependency Parsing**: Automatically extracts issue relationships from descriptions using conventions like `depends on #XX` or `blocked by #XX`.
-- **Local Caching**: Persists repository configurations and fetched issues in `localStorage` for a zero-setup return experience.
-- **Styling**: Vanilla CSS with a focus on modern aesthetics, including glassmorphism and smooth transitions.
+1.  **Configure Your Token:**
+    - Open Issue Flow in your browser.
+    - Click on the **Config** tab in the sidebar.
+    - **Add a GitHub Personal Access Token.** A classic token with `repo` scope is required to search for issues. [How to create a token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+    - Optionally, add a default repository in the format `owner/repo` (e.g., `facebook/react`) to scope your searches.
 
+2.  **Find and Add Issues:**
+    - Go to the **Search** tab.
+    - Use the input field to search for issues (e.g., `is:open label:bug`). If you set a default repo, it will be automatically included in the search.
+    - Drag issues from the search results onto the canvas.
 
-## React + TypeScript + Vite
+3.  **Organize Your Canvas:**
+    - Drag issues around to arrange them.
+    - Click and drag from the handle on the right side of one node to the handle on the left side of another to create a connection.
+    - Right-click a node to open the context menu, where you can change its color or delete it.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Tech Stack
 
-Currently, two official plugins are available:
+- **Frontend:** React with Vite & TypeScript
+- **Styling:** A custom, minimal set of utility classes inspired by Tailwind CSS.
+- **Canvas/Graphing:** React Flow
+- **GitHub Integration:** Octokit
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
+*This project was bootstrapped from a standard Vite + React template.*
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
