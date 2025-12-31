@@ -15,7 +15,8 @@ const IssueNode = ({ data }: NodeProps<{ label: string; issue: GitHubIssue; styl
             className={`px-4 py-3 shadow-xl rounded-xl border-2 transition-all duration-300 backdrop-blur-md ${borderColor} hover-scale-105 hover:shadow-2xl min-w-[250px]`}
             style={{ backgroundColor: bgColor }}
         >
-            <Handle type="target" position={Position.Left} className="w-3 h-3 bg-blue-400 border-2 border-white" />
+            <Handle id="left-target" type="target" position={Position.Left} className="!left-[-6px] !top-1/2 !-translate-y-1/2 w-3 h-3 bg-blue-400 border-2 border-white" />
+            <Handle id="top-target" type="target" position={Position.Top} className="!top-[-6px] !left-1/2 !-translate-x-1/2 w-3 h-3 bg-blue-400 border-2 border-white" />
 
             <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between gap-2">
@@ -39,7 +40,7 @@ const IssueNode = ({ data }: NodeProps<{ label: string; issue: GitHubIssue; styl
                                     src={issue.assignee.avatar_url}
                                     alt={issue.assignee.login}
                                     className="w-5 h-5 rounded-full ring-2 ring-white"
-                                />
+                                 />
                                 <span className="text-xs-extra text-gray-500 font-medium">@{issue.assignee.login}</span>
                             </>
                         ) : (
@@ -59,7 +60,8 @@ const IssueNode = ({ data }: NodeProps<{ label: string; issue: GitHubIssue; styl
                 </div>
             </div>
 
-            <Handle type="source" position={Position.Right} className="w-3 h-3 bg-blue-400 border-2 border-white" />
+            <Handle id="right-source" type="source" position={Position.Right} className="!right-[-6px] !top-1/2 !-translate-y-1/2 w-3 h-3 bg-blue-400 border-2 border-white" />
+            <Handle id="bottom-source" type="source" position={Position.Bottom} className="!bottom-[-6px] !left-1/2 !-translate-x-1/2 w-3 h-3 bg-blue-400 border-2 border-white" />
         </div>
     );
 };

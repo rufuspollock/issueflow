@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useReactFlow } from 'reactflow';
-import { Trash2, Palette } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 interface ContextMenuProps {
     id: string;
